@@ -46,43 +46,17 @@ void setup()
 
 void loop() 
 {
-  // Cycle from pins Y0 to Y15 first
-  for (int pin=0; pin<=15; pin++)
-  {
-    // Set the S0, S1, S2 and S3 pins to select our active
-    // output (Y0-Y15):
-    selectMuxPin(pin);
-    // While the output is selected ramp the LED intensity up
-    for (int intensity=0; intensity<=255; intensity++)
-    {
-      analogWrite(zOutput, intensity);
-      delayMicroseconds(DELAY_TIME);
-    }
-    // Then bring the analog output value down:
-    for (int intensity=255; intensity>=0; intensity--)
-    {
-      analogWrite(zOutput, intensity);
-      delayMicroseconds(DELAY_TIME);
-    }
-  }
-  // Now cycle from pins Y14 to Y1
-  for (int pin=14; pin>=1; pin--)
-  {
-    selectMuxPin(pin); // Select the pin
-    // Cycle the intensity up:
-    for (int intensity=0; intensity<=255; intensity++)
-    {
-      analogWrite(zOutput, intensity);
-      delayMicroseconds(DELAY_TIME);
-    }
-    // Then ramp the output down:
-    for (int intensity=255; intensity>=0; intensity--)
-    {
-      analogWrite(zOutput, intensity);
-      delayMicroseconds(DELAY_TIME);
-    }
-  }
+ 
+  selectMuxPin(8);
+  analogWrite(zOutput, 10);
+  selectMuxPin(0);
+  analogWrite(zOutput, 2);
+  selectMuxPin(4);
+  analogWrite(zOutput, 200);
+  delayMicroseconds(DELAY_TIME);
+    
 }
+
 
 // The selectMuxPin function sets the S0, S1, S2 and S3 pins
 // accordingly, given a pin from 0-15.
