@@ -11,10 +11,11 @@ four digital pins.
 
 Hardware Hookup:
 Mux Breakout ----------- Arduino
-     S0 ------------------- 2
-     S1 ------------------- 3
-     S2 ------------------- 4
-     Z -------------------- 5
+     S0 ------------------- 8
+     S1 ------------------- 9
+     S2 ------------------- 10
+     S3 ------------------- 11
+     Z -------------------- 3
     VCC ------------------- 5V
     GND ------------------- GND
     (VEE should be connected to GND)
@@ -27,15 +28,15 @@ SparkFun Multiplexer Breakout - 8-Channel(74HC4051) v10
 /////////////////////
 // Pin Definitions //
 /////////////////////
-const int selectPins[3] = {2, 3, 4}; // S0~2, S1~3, S2~4
-const int zOutput = 5; // Connect common (Z) to 5 (PWM-capable)
+const int selectPins[4] = {8, 9, 10, 11}; // S0~8, S1~9, S2~10, S2~11
+const int zOutput = 3; // Connect common (Z) to 3 (PWM-capable)
 
 const int LED_ON_TIME = 500; // Each LED is on 0.5s
 const int DELAY_TIME = ((float)LED_ON_TIME/512.0)*1000;
 void setup() 
 {
   // Set up the select pins, as outputs
-  for (int i=0; i<3; i++)
+  for (int i=0; i<4; i++)
   {
     pinMode(selectPins[i], OUTPUT);
     digitalWrite(selectPins[i], LOW);
@@ -45,11 +46,11 @@ void setup()
 
 void loop() 
 {
-  // Cycle from pins Y0 to Y7 first
-  for (int pin=0; pin<=7; pin++)
+  // Cycle from pins Y0 to Y15 first
+  for (int pin=0; pin<=15; pin++)
   {
-    // Set the S0, S1, and S2 pins to select our active
-    // output (Y0-Y7):
+    // Set the S0, S1, S2 and S3 pins to select our active
+    // output (Y0-Y15):
     selectMuxPin(pin);
     // While the output is selected ramp the LED intensity up
     for (int intensity=0; intensity<=255; intensity++)
@@ -64,8 +65,8 @@ void loop()
       delayMicroseconds(DELAY_TIME);
     }
   }
-  // Now cycle from pins Y6 to Y1
-  for (int pin=6; pin>=1; pin--)
+  // Now cycle from pins Y14 to Y1
+  for (int pin=14; pin>=1; pin--)
   {
     selectMuxPin(pin); // Select the pin
     // Cycle the intensity up:
@@ -83,12 +84,12 @@ void loop()
   }
 }
 
-// The selectMuxPin function sets the S0, S1, and S2 pins
-// accordingly, given a pin from 0-7.
+// The selectMuxPin function sets the S0, S1, S2 and S3 pins
+// accordingly, given a pin from 0-15.
 void selectMuxPin(byte pin)
 {
-  if (pin > 7) return; // Exit if pin is out of scope
-  for (int i=0; i<3; i++)
+  if (pin > 15) return; // Exit if pin is out of scope
+  for (int i=0; i<4; i++)
   {
     if (pin & (1<<i))
       digitalWrite(selectPins[i], HIGH);
