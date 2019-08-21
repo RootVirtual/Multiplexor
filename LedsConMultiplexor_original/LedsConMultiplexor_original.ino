@@ -33,6 +33,9 @@ const int zOutput = 3; // Connect common (Z) to 3 (PWM-capable)
 
 const int LED_ON_TIME = 500; // Each LED is on 0.5s
 const int DELAY_TIME = ((float)LED_ON_TIME/512.0)*1000;
+
+int a=0;
+
 void setup() 
 {
   // Set up the select pins, as outputs
@@ -47,13 +50,24 @@ void setup()
 void loop() 
 {
  
+  if(a==0){
   selectMuxPin(8);
   analogWrite(zOutput, 10);
+  delayMicroseconds(DELAY_TIME);
+  }else if(a==1){
   selectMuxPin(0);
   analogWrite(zOutput, 2);
+  delayMicroseconds(DELAY_TIME);
+  }else if(a==2){
   selectMuxPin(4);
   analogWrite(zOutput, 200);
   delayMicroseconds(DELAY_TIME);
+  }
+  delay(500);
+  a++;
+  if(a>2){
+    a=0;
+  }
     
 }
 
